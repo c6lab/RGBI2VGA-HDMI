@@ -1,0 +1,75 @@
+#define FW_VER // версия прошивки
+ser_name,115200 // скорость COM порта
+
+// команда
+mode //проверка режима железа
+> mode 0 //mode 0 - режим записи и считывания значений
+> mode 1 //mode 1 - можно менять лишь смещение
+
+// параметры (r)(w)
+
+//int16 .shX // pixels
+rcap_sh_x
+wcap_sh_x //смещение X
+
+//int16 .shY // pixels
+rcap_sh_y
+wcap_sh_y //смещение Y
+
+//uint32 .int_freq // KHz
+rcap_int_f
+wcap_int_f //внутренняя частота захвата (кГц)
+
+//uint .ext_freq_div // Целое
+rcap_ext_f_div
+wcap_ext_f_div //делитель
+
+//uint .capture_delay // nop(доп. тактовые циклы 0-31)
+rcap_delay
+wcap_delay //задержка захвата
+
+//uint .capture_delay_rise // nop(доп. тактовые циклы 0-31)
+rcap_delay_rise
+wcap_delay_rise //задержка захвата по фронту
+
+//uint .capture_delay_fall // nop(доп. тактовые циклы 0-31)
+rcap_delay_fall
+wcap_delay_fall //задержка захвата по спаду
+
+//uint16 .len_VS // pixels (min 5, max 1500)
+rcap_len_VS
+wcap_len_VS //Длина КСИ
+
+//enum .video_out_mode {VGA, HDMI, RGB, COMP}
+rvideo_out
+wvideo_out (0=isVGAout, 1=isHDMIout, 2=isRGBout, 3=isCOMPout) //видеовыход
+
+//enum .c_mode {PAL,NTSC, SECAM}
+rc_mode
+wc_mode (1=isNTSC, 0=) //isCOMPout 1=NTSC(60Гц), 0=PAL(50Гц)
+
+//bool .is_3X_Buf
+ris_3X_bufmode
+wis_3X_bufmode (1=is3X_BUFMODE, 0=) //буферизация
+
+//enum .in_sync_mode {S_SYNC, C_SYNC}
+rcap_sync_mode
+wcap_sync_mode (1=isVHS, 0=) //1=синхросмесь, 0=раздельная
+
+//bool .is_wide_mode
+rwide_mode
+wwide_mode (1=is_widescreen, 0=) //1=широкоэкранный
+
+//enum .p_clk_mode {SELF_SYNC_MODE, EXT_SYNC_MODE, Z80_FREQ_MODE}
+rcap_p_clk_mode
+wcap_p_clk_mode (1, 2, 0) //источник пиксельклока (0=самосинхронизация, 1=внешняя частота, 2=c 6 ноги z80)
+
+//uint .inv_capture_pin_mask
+rcap_in_inv_mask
+wcap_in_inv_mask (is_inv_F=40h, is_inv_VS=20h, is_inv_HS=10h, is_inv_I=08h, is_inv_R=04h, is_inv_G=02h, is_inv_B=01h) //инвертирование входных сигналов
+
+// команды
+ping //пинг
+save //сохранить значения
+exit //завершить чтение?
+reset //перезапуск адаптера, только в "mode 1"
